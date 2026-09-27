@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>لوحة تحكم المكتب</title>
+
+    <link rel="stylesheet" href="css/master.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            📖 لوحة تحكم المكتب
+        </div>
+
+        <nav>
+            <a href="index.html">صفحة الطلاب</a>
+        </nav>
+    </header>
+
+
+    <main class="admin-container">
+
+        <section class="admin-box">
+
+            <h1>إدارة الطلاب</h1>
+            <p class="admin-description">
+                إضافة وتعديل وحذف بيانات الطلاب
+            </p>
+
+            <form id="studentForm">
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="اسم الطالب"
+                    required
+                >
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder=" كلمة المرور"
+                    maxlength="6"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="month"
+                    placeholder="الشهر"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="grade"
+                    placeholder="التقييم الشهري"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="attendance"
+                    placeholder="نسبة الحضور مثال: 95%"
+                    required
+                >
+
+                <select id="payment" required>
+                    <option value="">حالة المصروفات</option>
+                    <option value="مدفوعة ✓">مدفوعة ✓</option>
+                    <option value="غير مدفوعة ✕">غير مدفوعة ✕</option>
+                </select>
+
+                <button type="submit" id="saveBtn">
+                    إضافة الطالب
+                </button>
+
+                <button
+                    type="button"
+                    id="cancelBtn"
+                    class="cancel-btn"
+                    style="display:none;"
+                >
+                    إلغاء التعديل
+                </button>
+
+            </form>
+
+            <p id="adminMessage"></p>
+
+        </section>
+
+
+        <section class="students-table-box">
+
+            <h2>قائمة الطلاب</h2>
+
+            <input
+                type="text"
+                id="searchStudent"
+                class="search-input"
+                placeholder="ابحث باسم الطالب أو  كلمةالمرور"
+            >
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th> كلمةالمرور</th>
+                            <th>الشهر</th>
+                            <th>التقييم</th>
+                            <th>الحضور</th>
+                            <th>المصروفات</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="studentsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2026 مكتب تحفيظ القرآن الكريم</p>
+    </footer>
+
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

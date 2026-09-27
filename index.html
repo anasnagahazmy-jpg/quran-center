@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>دارأهل القرآن الكريم</title>
+
+    <link rel="stylesheet" href="css/master.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            دارأهل القرآن الكريم
+  
+        </div>
+
+        <nav>
+            <a href="#home">الرئيسية</a>
+            <a href="#about">عن المكتب</a>
+            <a href="#login">بيانات الطالب</a>
+        </nav>
+    </header>
+
+
+    <!-- Home -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <h1>
+                مكتب تحفيظ القرآن الكريم
+            </h1>
+
+            <p>
+                تابع مستوى حفظك وتقييمك الشهري
+                وحالة المصروفات بسهولة
+            </p>
+
+            <a href="#login" class="main-btn">
+                دخول الطالب
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Login -->
+    <section class="login-section" id="login">
+
+        <div class="login-box">
+
+            <h2>بيانات الطالب</h2>
+
+            <p class="description">
+                أدخل كلمةالمرور لعرض بياناتك
+            </p>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="أدخل كلمة المرور"
+                maxlength="6"
+            >
+
+            <button onclick="searchStudent()">
+                عرض البيانات
+            </button>
+
+            <p id="error"></p>
+
+        </div>
+
+    </section>
+    <!-- Student Data -->
+    <section
+        class="student-section"
+        id="studentSection"
+        style="display: none;"
+    >
+        <div class="student-card">
+            <h2>بيانات الطالب</h2>
+            <div class="student-info">
+                <div class="info">
+                    <span>اسم الطالب</span>
+                    <strong id="studentName"></strong>
+                </div>
+                <div class="info">
+                    <span>كلمةالمرور </span>
+                    <strong id="studentpassword"></strong>
+                </div>
+                <div class="info">
+                    <span>الشهر</span>
+                    <strong id="studentMonth"></strong>
+                </div>
+                <div class="info">
+                    <span>التقييم الشهري</span>
+                    <strong id="studentGrade"></strong>
+                </div>
+                <div class="info">
+                    <span>نسبة الحضور</span>
+                    <strong id="studentAttendance"></strong>
+                </div>
+                <div class="info">
+                    <span>حالة المصروفات</span>
+                    <strong id="studentPayment"></strong>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="about" id="about">
+        <h2>عن المكتب</h2>
+        <p>
+            نسعى إلى تعليم وتحفيظ القرآن الكريم
+            بطريقة منظمة ومتابعة مستوى الطلاب بشكل مستمر.
+        </p>
+    </section>
+    <footer>
+        <p>
+              دارأهل القرآن 
+        </p>
+      <div class="footer">
+          <h4 class="number">لتواصل</h4>
+        <p>01064140370</p>
+      </div>
+    </footer>
+<script src="main.js"></script>
+</body>
+
+</html>
