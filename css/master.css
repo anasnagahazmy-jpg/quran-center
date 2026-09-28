@@ -22,21 +22,21 @@ body {
 ================================================== */
 
 :root {
-    --primary: #861f1f;
-    --primary-dark: #5e1414;
-    --primary-light: #a92d27;
+    --primary: #2a632c;
+    --primary-dark: #2a632c;
+    --primary-light: #2a632c;
 
-    --gold: #c9a24d;
-    --gold-light: #e5c875;
+    --gold:#2a632c;
+    --gold-light: #2a632c;
 
     --cream: #f8f3e8;
     --white: #ffffff;
 
-    --text: #30251f;
+    --text: #2a632c;
     --muted: #766d65;
 
     --shadow:
-        0 15px 45px rgba(75, 35, 20, 0.12);
+        0 15px 45px rgba(15, 80, 8, 0.12);
 
     --transition: 0.35s ease;
 }
@@ -49,16 +49,14 @@ body {
 header {
     width: 100%;
     min-height: 78px;
-
-    background: rgba(94, 20, 20, 0.97);
-
+background-color:#ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     padding: 0 8%;
 
-    color: white;
+    color:#2a632c;
 
     position: sticky;
     top: 0;
@@ -89,7 +87,7 @@ header::after {
         linear-gradient(
             90deg,
             transparent,
-            var(--gold),
+            var(#2a632c),
             transparent
         );
 }
@@ -103,15 +101,29 @@ header::after {
     font-size: 22px;
     font-weight: bold;
 
-    color: var(--gold-light);
+    color: #2a632c;
 
     position: relative;
 
     letter-spacing: 0.5px;
 }
-
+.logoo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8em;
+    font-style: italic;
+    font-weight: bold;
+    
+}
+.logoo img{
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    object-fit: contain;
+}
 .logo::before {
-    content: "☪️";
+    content: "";
 
     margin-left: 8px;
 
@@ -131,73 +143,46 @@ nav {
 }
 
 nav a {
-    color: white;
-
+    color:#2a632c;
     text-decoration: none;
-
-    font-size: 16px;
-
+    font-size: 20px;
     position: relative;
-
     padding: 8px 0;
-
     transition: var(--transition);
+    font-size: 1.2em;
+    font-weight: bold;
+    font-style: italic;
 }
-
-
-/* الخط اللي بيظهر تحت الرابط */
-
 nav a::after {
     content: "";
-
     position: absolute;
-
     bottom: 0;
     right: 0;
-
     width: 0;
     height: 2px;
-
-    background: var(--gold-light);
-
-    transition: var(--transition);
+    background: #2a632c;
+    transition: transition;
 }
-
 nav a:hover {
-    color: var(--gold-light);
+    color: #2a632c;
+    
 }
 
 nav a:hover::after {
     width: 100%;
 }
-
-
-/* ==================================================
-   HERO
-================================================== */
-
 .hero {
-    min-height: 90vw;
-
+    width: 100%;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-
     text-align: center;
-
     position: relative;
-
     overflow: hidden;
-
     background:
-        linear-gradient(
-            rgba(67, 12, 12, 0.70),
-            rgba(67, 12, 12, 0.82)
-        ),
-
-        url("../images/photo_2026-09-22_15-15-28.jpg");
-
-    background-size: cover;
+        url("../images/photo_2026-09-28_12-27-13.jpg")no-repeat;
+        background-size: contain;
     background-position: center;
 
     isolation: isolate;
@@ -208,74 +193,34 @@ nav a:hover::after {
 
 .hero::before {
     content: "";
-
     position: absolute;
-
     width: 500px;
     height: 500px;
-
     border-radius: 50%;
-
     background:
         radial-gradient(
             circle,
-            rgba(229, 200, 117, 0.18),
+            rgba(#2a632c),
             transparent 70%
         );
 
     top: -200px;
     right: -150px;
-
     animation: floating 6s ease-in-out infinite;
-
     z-index: -1;
 }
-
-
-/* زخرفة بسيطة */
-
-.hero::after {
-    content: "✦";
-
-    position: absolute;
-
-    color: rgba(229, 200, 117, 0.35);
-
-    font-size: 180px;
-
-    left: -20px;
-    bottom: -60px;
-
-    transform: rotate(-15deg);
-
-    animation: rotateSlow 15s linear infinite;
-
-    z-index: -1;
-}
-
-
-/* ==================================================
-   HERO CONTENT
-================================================== */
-
 .hero-content {
-    color: white;
-
+    color:#2a632c;
     max-width: 750px;
-
     padding: 30px;
-
     animation: heroAppear 1s ease forwards;
 }
 .hero h1 {
     font-size: clamp(32px, 5vw, 52px);
-
     margin-bottom: 20px;
-
-    color: #fff;
+color: #2a632c;;
 
     line-height: 1.4;
-
     text-shadow:
         0 5px 25px rgba(0, 0, 0, 0.35);
 }
@@ -285,20 +230,11 @@ nav a:hover::after {
 }
 
 .hero p {
-    font-size: 20px;
-
+    font-size: 26px;
     line-height: 2;
-
     margin-bottom: 35px;
-
-    color: #f7eee2;
+    color: rgb(63, 55, 11);
 }
-
-
-/* ==================================================
-   MAIN BUTTON
-================================================== */
-
 .main-btn {
     display: inline-block;
 
@@ -309,25 +245,17 @@ nav a:hover::after {
             var(--gold-light)
         );
 
-    color: #4c2919;
-
+    color: #ffffff;
     padding: 15px 38px;
-
     border-radius: 50px;
-
     text-decoration: none;
-
     font-size: 18px;
-
     font-weight: bold;
-
     box-shadow:
         0 10px 25px rgba(0, 0, 0, 0.25);
 
     transition: var(--transition);
-
     position: relative;
-
     overflow: hidden;
 }
 
@@ -336,12 +264,9 @@ nav a:hover::after {
 
 .main-btn::before {
     content: "";
-
     position: absolute;
-
     top: 0;
     left: -100%;
-
     width: 70%;
     height: 100%;
 
@@ -369,11 +294,6 @@ nav a:hover::after {
         0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
-
-/* ==================================================
-   LOGIN SECTION
-================================================== */
-
 .login-section {
     padding: 100px 20px;
 
@@ -383,29 +303,16 @@ nav a:hover::after {
     position: relative;
 }
 
-
-/* زخرفة خلفية */
-
 .login-section::before {
     content: "";
-
     position: absolute;
-
     width: 220px;
     height: 220px;
-
     border-radius: 50%;
-
     background: rgba(201, 162, 77, 0.08);
-
     top: 40px;
     right: -80px;
 }
-
-
-/* ==================================================
-   LOGIN BOX
-================================================== */
 
 .login-box {
     background:
@@ -413,23 +320,15 @@ nav a:hover::after {
 
     width: 100%;
     max-width: 470px;
-
     padding: 45px;
-
     border-radius: 25px;
-
     box-shadow: var(--shadow);
-
     text-align: center;
-
     border:
         1px solid rgba(201, 162, 77, 0.25);
-
     position: relative;
-
     animation: cardAppear 0.8s ease;
 }
-
 
 /* خط ذهبي أعلى الكارت */
 
@@ -459,9 +358,7 @@ nav a:hover::after {
 
 .login-box h2 {
     color: var(--primary);
-
     margin-bottom: 12px;
-
     font-size: 30px;
 }
 
@@ -469,65 +366,36 @@ nav a:hover::after {
     color: var(--muted);
 
     margin-bottom: 28px;
-
     line-height: 1.8;
 }
-
-
-/* ==================================================
-   INPUT
-================================================== */
-
 .login-box input {
     width: 100%;
-
     padding: 16px 18px;
-
     border:
         1px solid #ded5c7;
-
     border-radius: 12px;
-
     outline: none;
-
     font-size: 16px;
-
     margin-bottom: 17px;
-
     text-align: right;
-
     background: #fffdf9;
-
     color: var(--text);
-
     transition: var(--transition);
 }
 
 .login-box input:focus {
     border-color: var(--gold);
-
     background: white;
-
     box-shadow:
         0 0 0 4px rgba(201, 162, 77, 0.12);
 
     transform: translateY(-2px);
 }
-
-
-/* ==================================================
-   LOGIN BUTTON
-================================================== */
-
 .login-box button {
     width: 100%;
-
     padding: 16px;
-
     border: none;
-
     border-radius: 12px;
-
     background:
         linear-gradient(
             135deg,
@@ -536,119 +404,66 @@ nav a:hover::after {
         );
 
     color: white;
-
     font-size: 17px;
-
     font-weight: bold;
-
     cursor: pointer;
-
     transition: var(--transition);
-
     box-shadow:
-        0 8px 20px rgba(134, 31, 31, 0.2);
+        0 8px 20px rgba(72, 134, 31, 0.2);
 }
 .login-box button:hover {
     transform: translateY(-3px);
 
     box-shadow:
-        0 12px 25px rgba(134, 31, 31, 0.3);
+        0 12px 25px rgba(14, 94, 27, 0.3);
 }
-
-
-/* ==================================================
-   ERROR
-================================================== */
-
 #error {
-    color: #c62828;
-
+    color: #084e25;
     margin-top: 15px;
-
     font-weight: bold;
-
     animation: shake 0.35s ease;
 }
-
-
-/* ==================================================
-   STUDENT SECTION
-================================================== */
-
 .student-section {
     padding: 30px 20px 100px;
 
     position: relative;
 }
-
-
-/* ==================================================
-   STUDENT CARD
-================================================== */
-
 .student-card {
     width: 100%;
     max-width: 950px;
-
     margin: auto;
-
     background:
         rgba(255, 255, 255, 0.97);
-
     padding: 45px;
-
     border-radius: 25px;
-
     box-shadow: var(--shadow);
-
     border:
         1px solid rgba(201, 162, 77, 0.22);
-
     animation: cardAppear 0.8s ease;
 }
-
 .student-card h2 {
     text-align: center;
-
     color: var(--primary);
-
     margin-bottom: 35px;
-
     font-size: 30px;
-
     position: relative;
 }
 
 .student-card h2::after {
     content: "";
-
     display: block;
-
     width: 70px;
-
     height: 3px;
-
     margin: 12px auto 0;
-
     border-radius: 10px;
-
     background: var(--gold);
 }
-
-
-/* ==================================================
-   STUDENT INFO
-================================================== */
-
 .student-info {
     display: grid;
-
     grid-template-columns:
         repeat(2, 1fr);
-
     gap: 20px;
 }
-
 .info {
     background:
         linear-gradient(
@@ -770,7 +585,7 @@ nav a:hover::after {
 
     margin-bottom: 25px;
 
-    color: var(--gold-light);
+    color: #ffffff;
 
     position: relative;
 }
@@ -799,7 +614,7 @@ footer {
 
     padding: 25px;
 
-    background: #3c1515;
+    background: #2a632c;
 
     color: white;
 
@@ -855,7 +670,7 @@ footer p {
 ================================================== */
 
 #error {
-    color: #c62828;
+    color: #0b571e;
 
     margin-top: 15px;
 
@@ -1064,7 +879,7 @@ footer p {
 
     margin-bottom: 25px;
 
-    color: var(--gold-light);
+    color: #ffffff;
 
     position: relative;
 }
@@ -1093,17 +908,17 @@ footer {
 
     padding: 25px;
 
-    background: #3c1515;
+    background: #fffdf9;
 
     border-top:
         1px solid rgba(201, 162, 77, 0.25);
 }
 
 footer p {
-    color: gold;
-    font-style: initial;
-        font-size: 1.5em;
-
+    color:#2a632c;
+    font-style: italic;
+        font-size: 1.3em;
+font-weight: bold;
 }
 .footer{
     display: flex;
@@ -1111,7 +926,7 @@ footer p {
     align-items: center;
     flex-direction: column;
     letter-spacing: 3px;
-     color: gold;
+     color:#2a632c;
 }
 /* ==================================================
    ANIMATIONS
@@ -1310,10 +1125,26 @@ tr:hover {
 
 /* Mobile */
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
 
     #studentForm {
         grid-template-columns: 1fr;
+    }
+ header {
+        padding: 10px;
+        flex-direction: column;
+        gap: 8px;
+        
+    }
+.hero{
+    max-height: 100svh;
+    min-height: 600px;
+    background-size: cover;
+    background-position: center ;
+    background-repeat: no-repeat;
+}
+    .logo {
+        font-size: 1.4em;
     }
 
     .admin-box,
