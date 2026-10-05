@@ -1,138 +1,196 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>دارأهل القرآن الكريم</title>
-
-    <link rel="stylesheet" href="css/master.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="دار أهل القرآن لتحفيظ القرآن الكريم وتعليم التجويد">
+<title>دار أهل القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/master.css">
 </head>
-
 <body>
-    <header>
-        <div class="logoo">
-            دارأهل القرآن الكريم
-  <img src="images/photo_2026-09-28_12-49-58.jpg" alt="">
-        </div>
 
-        <nav>
-            <a href="#home">الرئيسية</a>
-            <a href="#about">عن المكتب</a>
-            <a href="#login">بيانات الطالب</a>
-        </nav>
-    </header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="30" fill="#0f5c3a" stroke="#c9a227" stroke-width="3"/>
+    <path d="M13 42c6-3 13-3 19 1 6-4 13-4 19-1V25c-6-3-13-3-19 1-6-4-13-4-19-1z" fill="#fff" stroke="#c9a227" stroke-width="1.5"/>
+    <path d="M32 26v17" stroke="#c9a227" stroke-width="1.5"/>
+    <path d="M39 12a9 9 0 1 0 7 13 7 7 0 1 1-7-13z" fill="#c9a227"/>
+  </symbol>
+</svg>
 
+<header class="site-header">
+  <div class="wrap hdr">
+    <a href="#home" class="brand"><svg class="logo"><use href="#logo"/></svg><span class="brand-name" id="brandName">دار أهل القرآن</span></a>
+    <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false">☰</button>
+    <nav class="nav" id="nav">
+      <a href="#home">الرئيسية</a>
+      <a href="#goals">أهداف الدار</a>
+      <a href="#courses">الدورات</a>
+      <a href="#contests">المسابقات</a>
+      <a href="#register">التسجيل</a>
+      <a href="#teachers">المعلمون</a>
+      <a href="#evaluations">التقييمات الشهرية</a>
+      <a href="#contact">اتصل بنا</a>
+      <a href="#admin" class="nav-admin">لوحة التحكم</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- Home -->
-    <section class="hero" id="home">
+<main>
 
-        <div class="hero-content">
- <h1>
-                   مرحبا بكم فى
-            </h1>
-            <h1>
-                دار أهل القرآن الكريم
-            </h1>
+<!-- 1. الرئيسية -->
+<section class="page" id="page-home">
+  <div class="hero">
+    <div class="wrap hero-in">
+      <svg class="logo big"><use href="#logo"/></svg>
+      <h1 id="heroName">دار أهل القرآن</h1>
+      <p class="bismillah">بسم الله الرحمن الرحيم</p>
+      <p class="lead" id="welcome"></p>
+      <a class="btn gold" href="#register">انضم معنا الآن</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <h2 class="title">نبذة عن الدار</h2>
+    <p class="about" id="about"></p>
 
-            <p>
-        بيئة عمل متميزه لتعليم القران الكريم وتحفيظه بأحسن الأساليب .
-            </p>
+    <h2 class="title">معرض الصور</h2>
+    <div class="gallery" id="gallery"></div>
 
-            <a href="#login" class="main-btn">
-                دخول الطالب
-            </a>
+    <h2 class="title">آخر الأخبار والإعلانات</h2>
+    <div class="grid" id="newsList"></div>
+  </div>
+</section>
 
-        </div>
+<!-- 2. أهداف الدار -->
+<section class="page" id="page-goals" hidden>
+  <div class="wrap">
+    <h2 class="title">أهداف الدار</h2>
+    <div class="grid goals">
+      <article class="card center"><div class="ico">📖</div><h3>تعليم القرآن الكريم بالتجويد</h3><p>تلاوة صحيحة متقنة وفق أحكام التجويد على أيدي معلمين مجازين.</p></article>
+      <article class="card center"><div class="ico">🤝</div><h3>غرس الأخلاق الإسلامية</h3><p>تربية الطالب على الصدق والأمانة وبر الوالدين وحسن الخلق.</p></article>
+      <article class="card center"><div class="ico">🌙</div><h3>إعداد جيل حافظ لكتاب الله</h3><p>خطط حفظ ومراجعة منتظمة تناسب كل مستوى وكل عمر.</p></article>
+      <article class="card center"><div class="ico">🌱</div><h3>تنمية القيم والسلوك الإسلامي</h3><p>ربط ما يتعلمه الطالب من القرآن بسلوكه اليومي في البيت والمدرسة.</p></article>
+      <article class="card center"><div class="ico">🏆</div><h3>تشجيع الطلاب بالمسابقات والجوائز</h3><p>مسابقات دورية وجوائز تحفيزية وتكريم شهري للمتميزين.</p></article>
+    </div>
+  </div>
+</section>
 
-    </section>
+<!-- 3. الدورات -->
+<section class="page" id="page-courses" hidden>
+  <div class="wrap">
+    <h2 class="title">الدورات</h2>
+    <div class="grid" id="coursesList"></div>
+    <h2 class="title">المواعيد والمستويات ورسوم الاشتراك</h2>
+    <div class="tw"><table id="coursesTable"></table></div>
+  </div>
+</section>
 
+<!-- 4. المسابقات -->
+<section class="page" id="page-contests" hidden>
+  <div class="wrap">
+    <h2 class="title">المسابقات</h2>
+    <div class="grid" id="contestsList"></div>
+  </div>
+</section>
 
-    <!-- Login -->
-    <section class="login-section" id="login">
-
-        <div class="login-box">
-
-            <h2>بيانات الطالب</h2>
-
-            <p class="description">
-                أدخل كلمةالمرور لعرض بياناتك
-            </p>
-
-            <input
-                type="password"
-                id="password"
-                placeholder="أدخل كلمة المرور"
-                maxlength="6"
-            >
- <input
-                type="text"
-                id="text"
-                placeholder="  إسم الطالب"
-            >
-            <button onclick="searchStudent()">
-                عرض البيانات
-            </button>
-
-            <p id="error"></p>
-
-        </div>
-
-    </section>
-    <!-- Student Data -->
-    <section
-        class="student-section"
-        id="studentSection"
-        style="display: none;"
-    >
-        <div class="student-card">
-            <h2>بيانات الطالب</h2>
-            <div class="student-info">
-                <div class="info">
-                    <span>اسم الطالب</span>
-                    <strong id="studentName"></strong>
-                </div>
-                <div class="info">
-                    <span>كلمةالمرور </span>
-                    <strong id="studentpassword"></strong>
-                </div>
-                <div class="info">
-                    <span>الشهر</span>
-                    <strong id="studentMonth"></strong>
-                </div>
-                <div class="info">
-                    <span>التقييم الشهري</span>
-                    <strong id="studentGrade"></strong>
-                </div>
-                <div class="info">
-                    <span>نسبة الحضور</span>
-                    <strong id="studentAttendance"></strong>
-                </div>
-                <div class="info">
-                    <span>حالة المصروفات</span>
-                    <strong id="studentPayment"></strong>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="about" id="about">
-        <h2>عن المكتب</h2>
-        <p>
-            نسعى إلى تعليم وتحفيظ القرآن الكريم
-            بطريقة منظمة ومتابعة مستوى الطلاب بشكل مستمر.
-        </p>
-    </section>
-    <footer>
-        <p>
-              دارأهل القرآن 
-        </p>
-      <div class="footer">
-          <h4 class="number">للتواصل</h4>
-        <p>01064140370</p>
+<!-- 5. التسجيل -->
+<section class="page" id="page-register" hidden>
+  <div class="wrap narrow">
+    <h2 class="title">التسجيل في الدار</h2>
+    <form id="regForm" class="form card" novalidate>
+      <label>الاسم بالكامل
+        <input name="name" required maxlength="80" autocomplete="name">
+      </label>
+      <div class="row">
+        <label>العمر
+          <input name="age" type="number" min="3" max="70" required inputmode="numeric">
+        </label>
+        <label>النوع
+          <select name="gender" required><option value="">اختر</option><option>ذكر</option><option>أنثى</option></select>
+        </label>
       </div>
-    </footer>
+      <div class="row">
+        <label>نوع الدراسة
+          <select name="study" required><option value="">اختر</option><option>أزهر</option><option>عام</option></select>
+        </label>
+        <label>المرحلة الدراسية
+          <select name="stage" required><option value="">اختر</option><option>ابتدائي</option><option>إعدادي</option><option>ثانوي</option><option>جامعة</option></select>
+        </label>
+      </div>
+      <label>رقم هاتف ولي الأمر
+        <input name="phone" type="tel" required inputmode="tel" placeholder="01xxxxxxxxx" dir="ltr">
+      </label>
+      <label>البريد الإلكتروني (اختياري)
+        <input name="email" type="email" dir="ltr">
+      </label>
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">إرسال الطلب</button>
+      <p class="msg" id="regMsg" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<!-- 6. المعلمون -->
+<section class="page" id="page-teachers" hidden>
+  <div class="wrap">
+    <h2 class="title">المعلمون</h2>
+    <div class="grid" id="teachersList"></div>
+  </div>
+</section>
+
+<!-- 7. التقييمات الشهرية -->
+<section class="page" id="page-evaluations" hidden>
+  <div class="wrap">
+    <h2 class="title">⭐ التقييمات الشهرية</h2>
+    <div class="center"><label class="inline">الشهر: <input type="month" id="evMonth"></label></div>
+    <div id="awardsBox"></div>
+    <h3 class="sub">جدول الطلاب المتميزين</h3>
+    <div class="tw"><table id="evTable"></table></div>
+  </div>
+</section>
+
+<!-- 8. اتصل بنا -->
+<section class="page" id="page-contact" hidden>
+  <div class="wrap">
+    <h2 class="title">اتصل بنا</h2>
+    <div class="two">
+      <div>
+        <div class="card" id="contactInfo"></div>
+        <form id="contactForm" class="form card" novalidate>
+          <label>الاسم<input name="name" required maxlength="80"></label>
+          <label>رقم الهاتف<input name="phone" type="tel" required dir="ltr"></label>
+          <label>الرسالة<textarea name="text" rows="4" required maxlength="800"></textarea></label>
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn" type="submit">إرسال الرسالة</button>
+          <p class="msg" id="contactMsg" role="status"></p>
+        </form>
+      </div>
+      <div class="map"><iframe id="mapFrame" title="موقع الدار على خرائط Google" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. لوحة التحكم -->
+<section class="page" id="page-admin" hidden>
+  <div class="wrap" id="adminRoot"></div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><span id="footName">دار أهل القرآن</span> © <span id="year"></span> — جميع الحقوق محفوظة</p>
+    <p class="verse">«خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ»</p>
+  </div>
+</footer>
+
+<dialog id="modal"><form id="mform"></form></dialog>
+<dialog id="lightbox"><img alt=""><button class="btn" id="lbClose" type="button">إغلاق</button></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 <script src="main.js"></script>
 </body>
-
 </html>
