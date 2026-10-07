@@ -18,8 +18,8 @@ const safeImg = s => (typeof s === 'string' && /^data:image\/(png|jpe?g|webp|gif
    2) أضف سطراً لكل صورة هنا، ثم ارفع المجلد والملفات على GitHub          */
 const SITE_GALLERY = [
   { src: 'images/photo_2026-10-07_11-47-56.jpg', cap: 'دار أهل القرآن' },   // الصورة الأولى: بعرض الصفحة
-  { src: 'images/photo_2026-10-07_11-47-43.jpg', cap: 'حلقات التحفيظ' },     // الصورتان التاليتان: تحتها بجانب بعض
-  { src: 'images/photo_2026-10-07_11-47-18.jpg', cap: 'أنشطة الدار' },
+  { src: 'images/photo_2026-10-07_11-47-18.jpg', cap: 'حلقات التحفيظ' },     // الصورتان التاليتان: تحتها بجانب بعض
+  { src: 'images/photo_2026-10-07_11-47-43.jpg', cap: 'أنشطة الدار' },
 ];
 const allGallery = () => [...SITE_GALLERY, ...DB.get('gallery', []).filter(x => safeImg(x.src))];
 
@@ -49,15 +49,22 @@ async function hash(pw) {
 }
 
 /* ---------- بيانات مبدئية (أمثلة قابلة للحذف من لوحة التحكم) ---------- */
-const SEED_V = 2, ADDR = 'شارع حمام منصور، المنصورة، الدقهلية، مصر';
+const SEED_V = 3, ADDR = 'شارع حمام منصور، المنصورة، الدقهلية، مصر';
 const defaultTeachers = () => [
-  { id: uid(), name: 'الأستاذ عمر نجاح عزمي', bio: 'معلم قرآن وتجويد، يهتم بتعليم الطلاب التلاوة الصحيحة وغرس الأخلاق الإسلامية فيهم.', qual: 'بكالوريوس دراسات إسلامية', exp: '' },
+  { id: uid(), name: 'الأستاذ عمر نجاح عزمي', bio: 'معلم قرآن وتجويد، يهتم بتعليم الطلاب التلاوة الصحيحة وغرس الأخلاق الإسلامية فيهم.', qual: 'بكالوريوس دراسات إسلامية', exp: '' }
 ];
 /* تحديث البيانات المثال القديمة المحفوظة في المتصفح (دون المساس بأي بيانات عدّلتها بنفسك) */
 function migrate() {
   if (DB.get('seedv', 1) >= SEED_V) return;
   const t = DB.get('teachers', []);
-  if (!t.length || t.every(x => /\(مثال\)/.test(x.name))) DB.set('teachers', defaultTeachers());
+  const known = n => /\(مثال\)/.test(n) || n === 'الأستاذة بشرى' || n === 'الأستاذ عمر نجاح عزمي';
+  if (!t.length || t.every(x => known(x.name))) DB.set('teachers', defaultTeachers());
+  const c = DB.get('courses', []);                       // مصروفات الدورات: المجموعة 80 ج، والخاص حسب الاتفاق
+  c.forEach(x => {
+    if (x.type === 'مجموعة' && !x.fee) x.fee = '80 ج شهرياً';
+    if (x.type === 'خاص' && x.fee === '200 ج شهرياً') x.fee = 'حسب الاتفاق';
+  });
+  DB.set('courses', c);
   const s = S(), old = 'المنصورة، الدقهلية، مصر';
   if (!s.address || s.address === old) s.address = ADDR;
   if (!s.map || s.map === old) s.map = ADDR;
@@ -70,13 +77,13 @@ function seed() {
     name: 'دار أهل القرآن',
     welcome: 'أهلاً بكم في دار أهل القرآن، حيث نصحب أبناءنا في رحلة حفظ كتاب الله وتعلّم أخلاقه.',
     about: 'دار أهل القرآن مؤسسة لتحفيظ القرآن الكريم وتعليم أحكام التجويد للأطفال والشباب، بإشراف معلمين مجازين، وبرامج متابعة وتقييم شهري ومسابقات تحفيزية.',
-    phone: '01064140370', whatsapp: '01064140370', email: 'omarnagah2003@gmail.com',
+    phone: '01000000000', whatsapp: '201000000000', email: 'info@example.com',
     address: 'شارع حمام منصور، المنصورة، الدقهلية، مصر', map: 'شارع حمام منصور، المنصورة، الدقهلية، مصر', adminHash: null
   });
   DB.set('teachers', defaultTeachers());
   DB.set('courses', [
-    { id: uid(), title: 'تحفيظ القرآن — حلقات جماعية', type: 'مجموعة', schedule: 'السبت إلى الأربعاء بعد العصر', levels: 'تمهيدي – متوسط – متقدم', fee: '' },
-    { id: uid(), title: 'تحفيظ القرآن — دروس خاصة', type: 'خاص', schedule: 'حسب الاتفاق', levels: 'جميع المستويات', fee: '200 ج شهرياً' }
+    { id: uid(), title: 'تحفيظ القرآن — حلقات جماعية', type: 'مجموعة', schedule: 'السبت إلى الأربعاء بعد العصر', levels: 'تمهيدي – متوسط – متقدم', fee: '80 ج شهرياً' },
+    { id: uid(), title: 'تحفيظ القرآن — دروس خاصة', type: 'خاص', schedule: 'حسب الاتفاق', levels: 'جميع المستويات', fee: 'حسب الاتفاق' }
   ]);
   DB.set('contests', [
     { id: uid(), title: 'مسابقة شهر رمضان', status: 'قادمة', cond: 'أن يكون الطالب مسجلاً في الدار.\nحفظ المقرر المحدد قبل موعد الاختبار.', prizes: 'جوائز نقدية وهدايا قيّمة للأوائل.', results: '' },
