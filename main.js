@@ -13,6 +13,16 @@ const thisMonth = () => new Date().toISOString().slice(0, 7);
 const today = () => new Date().toISOString().slice(0, 10);
 const safeImg = s => (typeof s === 'string' && /^data:image\/(png|jpe?g|webp|gif);base64,/.test(s)) ? s : '';
 
+/* ---------- صور المعرض الثابتة (تُرفع مع الموقع على GitHub) ----------
+   1) ضع ملفات الصور داخل مجلد اسمه images بجوار index.html
+   2) أضف سطراً لكل صورة هنا، ثم ارفع المجلد والملفات على GitHub          */
+const SITE_GALLERY = [
+   { src: 'images/photo_2026-10-07_11-47-18.jpg', cap: ' ' },
+   { src: 'images/photo_2026-10-07_11-47-43.jpg', cap: ' ' },
+   { src: 'images/photo_2026-10-07_11-47-56.jpg', cap:  '' },
+];
+const allGallery = () => [...SITE_GALLERY, ...DB.get('gallery', []).filter(x => safeImg(x.src))];
+
 const DB = {
   get(k, d) { try { const v = localStorage.getItem('dq_' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
   set(k, v) {
@@ -45,16 +55,15 @@ function seed() {
     name: 'دار أهل القرآن',
     welcome: 'أهلاً بكم في دار أهل القرآن، حيث نصحب أبناءنا في رحلة حفظ كتاب الله وتعلّم أخلاقه.',
     about: 'دار أهل القرآن مؤسسة لتحفيظ القرآن الكريم وتعليم أحكام التجويد للأطفال والشباب، بإشراف معلمين مجازين، وبرامج متابعة وتقييم شهري ومسابقات تحفيزية.',
-    phone: '01064140370', whatsapp: '01064140370', email: 'info@example.com',
-    address: 'المنصورة، الدقهلية، مصر', map: 'المنصورة، الدقهلية، مصر', adminHash: null
+    phone: '01000000000', whatsapp: '201000000000', email: 'info@example.com',
+    address: 'شارع حمام منصور، المنصورة، الدقهلية، مصر', map: 'شارع حمام منصور، المنصورة، الدقهلية، مصر', adminHash: null
   });
   DB.set('teachers', [
-    { id: uid(), name: 'الشيخ عمر نجاح', bio: 'معلم تجويد وتحفيظ، يهتم بتأسيس الطلاب على التلاوة الصحيحة.', qual: 'إجازة في رواية حفص عن عاصم', exp: 10 },
-    { id: uid(), name: 'الأستاذة بشرى أحمد', bio: 'مشرفة على حلقات البنات والأطفال.', qual: 'بكالوريوس دراسات إسلامية', exp: 6 }
+    { id: uid(), name: 'الأستاذ عمر نجاح عزمي', bio: 'معلم قرآن وتجويد، يهتم بتعليم الطلاب التلاوة الصحيحة وغرس الأخلاق الإسلامية فيهم.', qual: 'بكالوريوس دراسات إسلامية', exp: '' },
   ]);
   DB.set('courses', [
-    { id: uid(), title: 'تحفيظ القرآن — حلقات جماعية', type: 'مجموعة', schedule: 'السبت إلى الأربعاء بعد العصر', levels: 'تمهيدي – متوسط – متقدم', fee: '' },
-    { id: uid(), title: 'تحفيظ القرآن — دروس خاصة', type: 'خاص', schedule: 'حسب الاتفاق', levels: 'جميع المستويات', fee: '200 ج شهرياً' }
+    { id: uid(), title: 'تحفيظ القرآن — حلقات جماعية', type: 'مجموعة', schedule: 'السبت إلى الأربعاء  ', levels: 'تمهيدي – متوسط – متقدم', fee: '' },
+    { id: uid(), title: 'تحفيظ القرآن — دروس خاصة', type: 'خاص', schedule: 'حسب الاتفاق', levels: 'جميع المستويات',  }
   ]);
   DB.set('contests', [
     { id: uid(), title: 'مسابقة شهر رمضان', status: 'قادمة', cond: 'أن يكون الطالب مسجلاً في الدار.\nحفظ المقرر المحدد قبل موعد الاختبار.', prizes: 'جوائز نقدية وهدايا قيّمة للأوائل.', results: '' },
@@ -67,14 +76,14 @@ function seed() {
 }
 
 /* ---------- المسار (Router) ---------- */
-const pages = ['home', 'goals', 'courses', 'contests', 'register', 'teachers', 'evaluations', 'contact', 'admin'];
+const pages = ['home', 'goals', 'courses', 'contests', 'register', 'teachers', 'evaluations', 'contact', 'student', 'admin'];
 function route() {
   const h = (location.hash || '#home').slice(1);
   const p = pages.includes(h) ? h : 'home';
   $$('.page').forEach(e => e.hidden = e.id !== 'page-' + p);
   $$('.nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + p));
   $('#nav').classList.remove('open'); $('#burger').setAttribute('aria-expanded', 'false');
-  ({ home: rHome, courses: rCourses, contests: rContests, teachers: rTeachers, evaluations: rEval, contact: rContact, admin: rAdmin }[p] || (() => {}))();
+  ({ home: rHome, courses: rCourses, contests: rContests, teachers: rTeachers, evaluations: rEval, contact: rContact, student: rStudent, admin: rAdmin }[p] || (() => {}))();
   window.scrollTo(0, 0);
 }
 
@@ -84,7 +93,7 @@ function route() {
 function rHome() {
   const s = S();
   $('#heroName').textContent = s.name; $('#welcome').textContent = s.welcome; $('#about').textContent = s.about;
-  const g = DB.get('gallery', []).filter(x => safeImg(x.src));
+  const g = allGallery();
   $('#gallery').innerHTML = g.length
     ? g.map((x, i) => `<figure data-i="${i}"><img loading="lazy" src="${x.src}" alt="${esc(x.cap)}">${x.cap ? `<figcaption>${esc(x.cap)}</figcaption>` : ''}</figure>`).join('')
     : Array(6).fill('<div class="ph">﷽</div>').join('');
@@ -109,7 +118,7 @@ function rContests() {
 
 function rTeachers() {
   const t = DB.get('teachers', []);
-  $('#teachersList').innerHTML = t.map(x => `<article class="card center"><div class="avatar" style="margin-inline:auto">${esc((x.name || '؟').trim().charAt(0))}</div><h3>${esc(x.name)}</h3><p class="pre">${esc(x.bio)}</p><p>🎓 ${esc(x.qual)}</p><p>⏳ خبرة ${esc(x.exp)} سنوات</p></article>`).join('') || '<p class="center">لا يوجد معلمون مسجلون.</p>';
+  $('#teachersList').innerHTML = t.map(x => `<article class="card center"><div class="avatar" style="margin-inline:auto">${esc((x.name || '؟').trim().charAt(0))}</div><h3>${esc(x.name)}</h3><p class="pre">${esc(x.bio)}</p>${x.qual ? `<p>🎓 ${esc(x.qual)}</p>` : ''}${x.exp ? `<p>⏳ خبرة ${esc(x.exp)} سنوات</p>` : ''}</article>`).join('') || '<p class="center">لا يوجد معلمون مسجلون.</p>';
 }
 
 const gradeOf = v => v >= 9 ? 'ممتاز' : v >= 8 ? 'جيد جداً' : v >= 6.5 ? 'جيد' : v >= 5 ? 'مقبول' : 'يحتاج متابعة';
@@ -142,21 +151,66 @@ function rContact() {
   if (f.getAttribute('src') !== src) f.setAttribute('src', src);
 }
 
+/* ---------- بوابة الطالب ---------- */
+const norm = s => String(s ?? '').trim().replace(/\s+/g, ' ');
+let sTries = 0, sLock = 0;
+function rStudent() {
+  const root = $('#studentRoot');
+  const s = DB.get('students', []).find(x => x.id === sessionStorage.getItem('dq_stu'));
+  if (!s) {
+    sessionStorage.removeItem('dq_stu');
+    root.innerHTML = `<form class="form card login" id="stuLogin"><h2 class="center" style="margin:0;color:var(--g)">🎓 دخول الطالب</h2>
+      <label>اسم الطالب بالكامل<input name="n" required autocomplete="username"></label>
+      <label>كلمة المرور<input name="p" type="password" required autocomplete="current-password" dir="ltr"></label>
+      <button class="btn" type="submit">دخول</button><p class="msg err" id="stuMsg"></p>
+      <p class="hint">لم تسجّل بعد؟ <a href="#register">سجّل من هنا</a>. يمكنك الدخول بعد قبول طلبك من الإدارة.</p></form>`;
+    $('#stuLogin').addEventListener('submit', async e => {
+      e.preventDefault();
+      if (Date.now() < sLock) return $('#stuMsg').textContent = 'محاولات كثيرة، انتظر دقيقة ثم أعد المحاولة';
+      const f = e.target, h = await hash(f.p.value), n = norm(f.n.value);
+      const st = DB.get('students', []).find(x => norm(x.name) === n && x.passHash && x.passHash === h);
+      if (st) { sessionStorage.setItem('dq_stu', st.id); sTries = 0; rStudent(); }
+      else { if (++sTries >= 5) { sLock = Date.now() + 60000; sTries = 0; } $('#stuMsg').textContent = 'الاسم أو كلمة المرور غير صحيحة، أو لم يُقبل طلبك بعد'; }
+    });
+    return;
+  }
+  const mine = k => DB.get(k, []).filter(x => norm(x.student) === norm(s.name)).sort((a, b) => (b.month || '').localeCompare(a.month || ''));
+  const ev = mine('evals'), fees = mine('fees'), cur = fees.find(f => f.month === thisMonth());
+  const paid = f => f.status === 'مدفوع';
+  const feeBox = cur
+    ? `<div class="feebox ${paid(cur) ? 'ok' : 'no'}"><span>مصروفات هذا الشهر (${esc(cur.month)})</span><strong>${paid(cur) ? '✅ مدفوعة' : '❌ غير مدفوعة'}</strong>${cur.amount ? `<span>المبلغ: ${esc(cur.amount)} ج</span>` : ''}</div>`
+    : `<div class="feebox"><span>مصروفات هذا الشهر</span><strong>لم تُسجَّل بعد</strong></div>`;
+  const info = [['الاسم', s.name], ['النوع', s.gender], ['العمر', s.age], ['نوع الدراسة', s.study], ['المرحلة الدراسية', s.stage], ['هاتف ولي الأمر', s.phone], ['البريد الإلكتروني', s.email], ['الدورة', s.course]];
+  root.innerHTML = `<div class="phead"><h2>أهلاً ${esc(s.name)} 🌙</h2><button class="btn ghost" id="stuOut">تسجيل الخروج</button></div>
+    <h3 class="sub">بياناتي</h3><div class="info">${info.map(([l, v]) => `<div><small>${l}</small><b>${esc(v) || '—'}</b></div>`).join('')}</div>
+    <h3 class="sub">المصروفات</h3>${feeBox}
+    <div class="tw"><table><thead><tr><th>الشهر</th><th>المبلغ</th><th>الحالة</th></tr></thead><tbody>${
+      fees.map(f => `<tr><td>${esc(f.month)}</td><td>${esc(f.amount) || '—'}</td><td><span class="badge ${paid(f) ? '' : 'red'}">${esc(f.status)}</span></td></tr>`).join('') || '<tr><td colspan="3" class="center">لا توجد سجلات مصروفات</td></tr>'}</tbody></table></div>
+    <h3 class="sub">تقييماتي الشهرية</h3>
+    <div class="tw"><table><thead><tr><th>الشهر</th><th>الحضور</th><th>الأخلاق</th><th>الدراسة</th><th>التقييم العام</th><th>الصفحات المحفوظة</th></tr></thead><tbody>${
+      ev.map(e => `<tr><td>${esc(e.month)}</td><td>${bar(e.attend)}</td><td>${bar(e.ethics)}</td><td>${bar(e.study)}</td><td>${bar(e.overall)}<span class="badge">${gradeOf(e.overall)}</span></td><td>${esc(e.pages) || '—'}</td></tr>`).join('') || '<tr><td colspan="6" class="center">لا توجد تقييمات بعد</td></tr>'}</tbody></table></div>`;
+  $('#stuOut').onclick = () => { sessionStorage.removeItem('dq_stu'); rStudent(); };
+}
+
 /* ---------- النماذج العامة ---------- */
 const phoneOk = v => /^\+?[0-9\s-]{8,16}$/.test(v.trim());
 function setMsg(id, text, ok) { const e = $(id); e.textContent = text; e.className = 'msg ' + (ok ? 'ok' : 'err'); }
 
 function bindPublicForms() {
-  $('#regForm').addEventListener('submit', e => {
+  $('#regForm').addEventListener('submit', async e => {
     e.preventDefault(); const f = e.target;
     if (f.website.value) return;                      // فخ للروبوتات
-    const d = Object.fromEntries(new FormData(f));
-    if (d.name.trim().length < 6) return setMsg('#regMsg', 'من فضلك اكتب الاسم بالكامل', 0);
+    const d = Object.fromEntries(new FormData(f)), name = norm(d.name);
+    if (name.length < 6) return setMsg('#regMsg', 'من فضلك اكتب الاسم بالكامل', 0);
     if (!(+d.age >= 3 && +d.age <= 70)) return setMsg('#regMsg', 'العمر غير صحيح', 0);
     if (!d.gender || !d.study || !d.stage) return setMsg('#regMsg', 'من فضلك أكمل جميع الحقول', 0);
     if (!phoneOk(d.phone)) return setMsg('#regMsg', 'رقم الهاتف غير صحيح', 0);
+    if ((d.password || '').length < 6) return setMsg('#regMsg', 'كلمة المرور 6 أحرف على الأقل', 0);
+    if (d.password !== d.password2) return setMsg('#regMsg', 'تأكيد كلمة المرور غير مطابق', 0);
     const regs = DB.get('regs', []);
-    regs.unshift({ id: uid(), date: today(), name: d.name.trim(), age: +d.age, gender: d.gender, study: d.study, stage: d.stage, phone: d.phone.trim(), email: (d.email || '').trim(), status: 'جديد' });
+    if (regs.some(r => norm(r.name) === name) || DB.get('students', []).some(s => norm(s.name) === name))
+      return setMsg('#regMsg', 'هذا الاسم مسجّل بالفعل. إن كنت طالباً جديداً بنفس الاسم أضف ما يميّزه (مثل اسم الجد) أو تواصل مع الدار', 0);
+    regs.unshift({ id: uid(), date: today(), name, age: +d.age, gender: d.gender, study: d.study, stage: d.stage, phone: d.phone.trim(), email: (d.email || '').trim(), passHash: await hash(d.password), status: 'جديد' });
     if (DB.set('regs', regs)) { f.reset(); setMsg('#regMsg', 'تم إرسال طلبك بنجاح، سنتواصل مع ولي الأمر قريباً بإذن الله 🌙', 1); }
   });
   $('#contactForm').addEventListener('submit', e => {
@@ -170,7 +224,7 @@ function bindPublicForms() {
   });
   $('#gallery').addEventListener('click', e => {
     const fig = e.target.closest('figure'); if (!fig) return;
-    const g = DB.get('gallery', []).filter(x => safeImg(x.src))[+fig.dataset.i];
+    const g = allGallery()[+fig.dataset.i];
     if (g) { $('#lightbox img').src = g.src; $('#lightbox').showModal(); }
   });
   $('#lbClose').onclick = () => $('#lightbox').close();
@@ -180,7 +234,7 @@ function bindPublicForms() {
 /* =====================================================
    لوحة التحكم
    ===================================================== */
-const STAGES = ['ابتدائي', 'إعدادي', 'ثانوي',];
+const STAGES = ['ابتدائي', 'إعدادي', 'ثانوي', 'جامعة'];
 const courseTitles = () => DB.get('courses', []).map(c => c.title);
 const studentNames = () => DB.get('students', []).map(s => s.name);
 
@@ -193,7 +247,8 @@ const ENT = {
     { k: 'stage', l: 'المرحلة الدراسية', t: 'select', o: STAGES },
     { k: 'phone', l: 'هاتف ولي الأمر', t: 'tel' },
     { k: 'email', l: 'البريد الإلكتروني', t: 'email' },
-    { k: 'course', l: 'الدورة', t: 'select', o: courseTitles }] },
+    { k: 'course', l: 'الدورة', t: 'select', o: courseTitles },
+    { k: 'pw', l: 'كلمة مرور الطالب لبوابة الطالب (اتركها فارغة لعدم التغيير)', t: 'password' }] },
   teachers: { t: 'المعلمون', cols: ['name', 'qual', 'exp'], f: [
     { k: 'name', l: 'الاسم', req: 1 }, { k: 'bio', l: 'نبذة تعريفية', t: 'textarea' },
     { k: 'qual', l: 'المؤهل العلمي' }, { k: 'exp', l: 'سنوات الخبرة', t: 'number' }] },
@@ -213,9 +268,14 @@ const ENT = {
     { k: 'attend', l: 'الالتزام بالحضور (0–10)', t: 'number', min: 0, max: 10, step: .5, req: 1 },
     { k: 'ethics', l: 'الالتزام بالأخلاق (0–10)', t: 'number', min: 0, max: 10, step: .5, req: 1 },
     { k: 'study', l: 'الالتزام بالدراسة (0–10)', t: 'number', min: 0, max: 10, step: .5, req: 1 },
-    { k: 'pages', l: 'عدد الصفحات المحفوظة هذا الشهر', t: 'number', min: 0 }] }
+    { k: 'pages', l: 'عدد الصفحات المحفوظة هذا الشهر', t: 'number', min: 0 }] },
+  fees: { t: 'المصروفات', cols: ['month', 'student', 'amount', 'status'], f: [
+    { k: 'month', l: 'الشهر', t: 'month', req: 1, def: thisMonth },
+    { k: 'student', l: 'اسم الطالب', req: 1, list: studentNames },
+    { k: 'amount', l: 'المبلغ (ج)', t: 'number', min: 0 },
+    { k: 'status', l: 'الحالة', t: 'select', o: ['مدفوع', 'غير مدفوع'], req: 1 }] }
 };
-const LBL = { month: 'الشهر', student: 'الطالب', attend: 'الحضور', ethics: 'الأخلاق', study: 'الدراسة', overall: 'التقييم العام', pages: 'الصفحات' };
+const LBL = { month: 'الشهر', student: 'الطالب', attend: 'الحضور', ethics: 'الأخلاق', study: 'الدراسة', overall: 'التقييم العام', pages: 'الصفحات', amount: 'المبلغ', status: 'الحالة' };
 const fl = (E, k) => (E.f.find(x => x.k === k) || {}).l?.replace(/\s*\(.*\)/, '') || LBL[k] || k;
 
 /* --- الدخول --- */
@@ -223,7 +283,7 @@ const authOk = () => { const t = +sessionStorage.getItem('dq_auth'); return t &&
 let tries = 0, lockUntil = 0;
 
 let tab = 'students';
-const TABS = [['students', 'الطلاب'], ['regs', 'التسجيلات'], ['teachers', 'المعلمون'], ['courses', 'الدورات'], ['contests', 'المسابقات'], ['news', 'الأخبار والإعلانات'], ['gallery', 'الصور'], ['evals', 'التقييمات الشهرية'], ['awards', 'المكرَّمون'], ['notify', 'الإشعارات'], ['reports', 'التقارير'], ['msgs', 'الرسائل'], ['settings', 'الإعدادات']];
+const TABS = [['students', 'الطلاب'], ['regs', 'التسجيلات'], ['teachers', 'المعلمون'], ['courses', 'الدورات'], ['contests', 'المسابقات'], ['news', 'الأخبار والإعلانات'], ['gallery', 'الصور'], ['evals', 'التقييمات الشهرية'], ['fees', 'المصروفات'], ['awards', 'المكرَّمون'], ['notify', 'الإشعارات'], ['reports', 'التقارير'], ['msgs', 'الرسائل'], ['settings', 'الإعدادات']];
 
 function rAdmin() {
   const root = $('#adminRoot');
@@ -275,7 +335,8 @@ function crudView(key) {
     <div class="tw"><table><thead><tr>${E.cols.map(c => `<th>${esc(fl(E, c))}</th>`).join('')}<th></th></tr></thead><tbody>${
     shown.map(r => `<tr>${E.cols.map(c => `<td>${esc(r[c] ?? '')}</td>`).join('')}<td class="act"><button data-e="${r.id}">تعديل</button><button data-d="${r.id}" class="danger">حذف</button></td></tr>`).join('') || '<tr><td colspan="99" class="center">لا توجد بيانات</td></tr>'}</tbody></table></div>`;
   $('#q').onchange = e => { Q[key] = e.target.value; crudView(key); };
-  const save = (old, d) => {
+  const save = async (old, d) => {
+    if ('pw' in d) { const pw = d.pw; delete d.pw; if (pw) d.passHash = await hash(pw); }
     let o = { ...(old || { id: uid() }), ...d }; if (E.pre) o = E.pre(o);
     const all = DB.get(key, []); const i = all.findIndex(x => x.id === o.id);
     i >= 0 ? all[i] = o : all.unshift(o);
@@ -297,7 +358,7 @@ function vRegs() {
   $$('[data-d]', box).forEach(b => b.onclick = () => { if (confirm('حذف الطلب؟')) { DB.set('regs', list.filter(x => x.id !== b.dataset.d)); vRegs(); } });
   $$('[data-c]', box).forEach(b => b.onclick = () => {
     const r = list.find(x => x.id === b.dataset.c), stu = DB.get('students', []);
-    stu.unshift({ id: uid(), name: r.name, gender: r.gender, age: r.age, study: r.study, stage: r.stage, phone: r.phone, email: r.email, course: '' });
+    stu.unshift({ id: uid(), name: r.name, gender: r.gender, age: r.age, study: r.study, stage: r.stage, phone: r.phone, email: r.email, course: '', passHash: r.passHash || '' });
     DB.set('students', stu); r.status = 'مقبول'; DB.set('regs', list); toast('تمت إضافته إلى الطلاب'); vRegs();
   });
 }
@@ -316,7 +377,7 @@ function resizeImg(file, max = 900) {
 }
 function vGallery() {
   const g = DB.get('gallery', []), box = $('#dashMain');
-  box.innerHTML = `<div class="panel"><h3>رفع الصور</h3><p class="hint">تُضغط الصور تلقائياً لتوفير المساحة.</p><label>التعليق (اختياري)<input id="gcap"></label><br><input type="file" id="gfile" accept="image/*" multiple></div>
+  box.innerHTML = `<div class="panel"><h3>رفع الصور</h3><p class="hint">تنبيه: الصور المرفوعة من هنا تُحفظ في هذا المتصفح فقط ولا تظهر لزوار الموقع على GitHub. لنشر صورة للجميع ضعها في مجلد images وسجّلها في SITE_GALLERY أعلى ملف app.js.</p><label>التعليق (اختياري)<input id="gcap"></label><br><input type="file" id="gfile" accept="image/*" multiple></div>
     <div class="thumbs">${g.map(x => `<div><img src="${safeImg(x.src)}" alt="${esc(x.cap)}"><button class="btn sm danger" data-d="${x.id}">حذف</button></div>`).join('')}</div>`;
   $('#gfile').onchange = async e => {
     const arr = DB.get('gallery', []);
@@ -385,7 +446,8 @@ const REP = {
   regs: { t: 'طلبات التسجيل', h: ['التاريخ', 'الاسم', 'العمر', 'نوع الدراسة', 'المرحلة', 'الهاتف', 'الحالة'], k: ['date', 'name', 'age', 'study', 'stage', 'phone', 'status'] },
   teachers: { t: 'المعلمون', h: ['الاسم', 'المؤهل', 'سنوات الخبرة'], k: ['name', 'qual', 'exp'] },
   evals: { t: 'التقييمات الشهرية', h: ['الشهر', 'الطالب', 'الحضور', 'الأخلاق', 'الدراسة', 'التقييم العام', 'الصفحات'], k: ['month', 'student', 'attend', 'ethics', 'study', 'overall', 'pages'] },
-  courses: { t: 'الدورات', h: ['الدورة', 'النوع', 'المواعيد', 'المستويات', 'الرسوم'], k: ['title', 'type', 'schedule', 'levels', 'fee'] }
+  courses: { t: 'الدورات', h: ['الدورة', 'النوع', 'المواعيد', 'المستويات', 'الرسوم'], k: ['title', 'type', 'schedule', 'levels', 'fee'] },
+  fees: { t: 'المصروفات', h: ['الشهر', 'الطالب', 'المبلغ', 'الحالة'], k: ['month', 'student', 'amount', 'status'] }
 };
 function vReports() {
   $('#dashMain').innerHTML = `<div class="panel"><h3>استخراج التقارير</h3><p class="hint">ملفات Excel تُحمَّل مباشرة. لتقرير PDF اختر «حفظ كـ PDF» من نافذة الطباعة.</p>

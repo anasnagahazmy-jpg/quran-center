@@ -34,6 +34,7 @@
       <a href="#teachers">المعلمون</a>
       <a href="#evaluations">التقييمات الشهرية</a>
       <a href="#contact">اتصل بنا</a>
+      <a href="#student">بوابة الطالب</a>
       <a href="#admin" class="nav-admin">لوحة التحكم</a>
     </nav>
   </div>
@@ -126,6 +127,15 @@
       <label>البريد الإلكتروني (اختياري)
         <input name="email" type="email" dir="ltr">
       </label>
+      <div class="row">
+        <label>كلمة مرور الطالب (6 أحرف على الأقل)
+          <input name="password" type="password" required minlength="6" dir="ltr" autocomplete="new-password">
+        </label>
+        <label>تأكيد كلمة المرور
+          <input name="password2" type="password" required minlength="6" dir="ltr" autocomplete="new-password">
+        </label>
+      </div>
+      <p class="hint">ستدخل بها بوابة الطالب (باسمك بالكامل + كلمة المرور) بعد قبول طلبك من الإدارة.</p>
       <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn" type="submit">إرسال الطلب</button>
       <p class="msg" id="regMsg" role="status"></p>
@@ -171,6 +181,11 @@
       <div class="map"><iframe id="mapFrame" title="موقع الدار على خرائط Google" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
     </div>
   </div>
+</section>
+
+<!-- بوابة الطالب -->
+<section class="page" id="page-student" hidden>
+  <div class="wrap" id="studentRoot"></div>
 </section>
 
 <!-- 9. لوحة التحكم -->
