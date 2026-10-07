@@ -17,9 +17,9 @@ const safeImg = s => (typeof s === 'string' && /^data:image\/(png|jpe?g|webp|gif
    1) ضع ملفات الصور داخل مجلد اسمه images بجوار index.html
    2) أضف سطراً لكل صورة هنا، ثم ارفع المجلد والملفات على GitHub          */
 const SITE_GALLERY = [
-   { src: 'images/photo_2026-10-07_11-47-18.jpg', cap: ' ' },
-   { src: 'images/photo_2026-10-07_11-47-43.jpg', cap: ' ' },
-   { src: 'images/photo_2026-10-07_11-47-56.jpg', cap:  '' },
+  { src: 'images/photo_2026-10-07_11-47-56.jpg', cap: 'دار أهل القرآن' },   // الصورة الأولى: بعرض الصفحة
+  { src: 'images/photo_2026-10-07_11-47-43.jpg', cap: 'حلقات التحفيظ' },     // الصورتان التاليتان: تحتها بجانب بعض
+  { src: 'images/photo_2026-10-07_11-47-18.jpg', cap: 'أنشطة الدار' },
 ];
 const allGallery = () => [...SITE_GALLERY, ...DB.get('gallery', []).filter(x => safeImg(x.src))];
 
@@ -49,21 +49,34 @@ async function hash(pw) {
 }
 
 /* ---------- بيانات مبدئية (أمثلة قابلة للحذف من لوحة التحكم) ---------- */
+const SEED_V = 2, ADDR = 'شارع حمام منصور، المنصورة، الدقهلية، مصر';
+const defaultTeachers = () => [
+  { id: uid(), name: 'الأستاذ عمر نجاح عزمي', bio: 'معلم قرآن وتجويد، يهتم بتعليم الطلاب التلاوة الصحيحة وغرس الأخلاق الإسلامية فيهم.', qual: 'بكالوريوس دراسات إسلامية', exp: '' },
+];
+/* تحديث البيانات المثال القديمة المحفوظة في المتصفح (دون المساس بأي بيانات عدّلتها بنفسك) */
+function migrate() {
+  if (DB.get('seedv', 1) >= SEED_V) return;
+  const t = DB.get('teachers', []);
+  if (!t.length || t.every(x => /\(مثال\)/.test(x.name))) DB.set('teachers', defaultTeachers());
+  const s = S(), old = 'المنصورة، الدقهلية، مصر';
+  if (!s.address || s.address === old) s.address = ADDR;
+  if (!s.map || s.map === old) s.map = ADDR;
+  DB.set('settings', s); DB.set('seedv', SEED_V);
+}
+
 function seed() {
   if (DB.get('seeded')) return;
   DB.set('settings', {
     name: 'دار أهل القرآن',
     welcome: 'أهلاً بكم في دار أهل القرآن، حيث نصحب أبناءنا في رحلة حفظ كتاب الله وتعلّم أخلاقه.',
     about: 'دار أهل القرآن مؤسسة لتحفيظ القرآن الكريم وتعليم أحكام التجويد للأطفال والشباب، بإشراف معلمين مجازين، وبرامج متابعة وتقييم شهري ومسابقات تحفيزية.',
-    phone: '01000000000', whatsapp: '201000000000', email: 'info@example.com',
+    phone: '01064140370', whatsapp: '01064140370', email: 'omarnagah2003@gmail.com',
     address: 'شارع حمام منصور، المنصورة، الدقهلية، مصر', map: 'شارع حمام منصور، المنصورة، الدقهلية، مصر', adminHash: null
   });
-  DB.set('teachers', [
-    { id: uid(), name: 'الأستاذ عمر نجاح عزمي', bio: 'معلم قرآن وتجويد، يهتم بتعليم الطلاب التلاوة الصحيحة وغرس الأخلاق الإسلامية فيهم.', qual: 'بكالوريوس دراسات إسلامية', exp: '' },
-  ]);
+  DB.set('teachers', defaultTeachers());
   DB.set('courses', [
-    { id: uid(), title: 'تحفيظ القرآن — حلقات جماعية', type: 'مجموعة', schedule: 'السبت إلى الأربعاء  ', levels: 'تمهيدي – متوسط – متقدم', fee: '' },
-    { id: uid(), title: 'تحفيظ القرآن — دروس خاصة', type: 'خاص', schedule: 'حسب الاتفاق', levels: 'جميع المستويات',  }
+    { id: uid(), title: 'تحفيظ القرآن — حلقات جماعية', type: 'مجموعة', schedule: 'السبت إلى الأربعاء بعد العصر', levels: 'تمهيدي – متوسط – متقدم', fee: '' },
+    { id: uid(), title: 'تحفيظ القرآن — دروس خاصة', type: 'خاص', schedule: 'حسب الاتفاق', levels: 'جميع المستويات', fee: '200 ج شهرياً' }
   ]);
   DB.set('contests', [
     { id: uid(), title: 'مسابقة شهر رمضان', status: 'قادمة', cond: 'أن يكون الطالب مسجلاً في الدار.\nحفظ المقرر المحدد قبل موعد الاختبار.', prizes: 'جوائز نقدية وهدايا قيّمة للأوائل.', results: '' },
@@ -72,7 +85,7 @@ function seed() {
   DB.set('news', [
     { id: uid(), title: 'بدء التسجيل للفصل الجديد', date: today(), body: 'يسعدنا استقبال طلبات الالتحاق بحلقات التحفيظ. سارعوا بالتسجيل من صفحة التسجيل.' }
   ]);
-  DB.set('seeded', 1);
+  DB.set('seeded', 1); DB.set('seedv', SEED_V);
 }
 
 /* ---------- المسار (Router) ---------- */
@@ -84,8 +97,9 @@ function route() {
   $$('.nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + p));
   $('#nav').classList.remove('open'); $('#burger').setAttribute('aria-expanded', 'false');
   ({ home: rHome, courses: rCourses, contests: rContests, teachers: rTeachers, evaluations: rEval, contact: rContact, student: rStudent, admin: rAdmin }[p] || (() => {}))();
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 /* =====================================================
    الصفحات العامة
@@ -95,8 +109,8 @@ function rHome() {
   $('#heroName').textContent = s.name; $('#welcome').textContent = s.welcome; $('#about').textContent = s.about;
   const g = allGallery();
   $('#gallery').innerHTML = g.length
-    ? g.map((x, i) => `<figure data-i="${i}"><img loading="lazy" src="${x.src}" alt="${esc(x.cap)}">${x.cap ? `<figcaption>${esc(x.cap)}</figcaption>` : ''}</figure>`).join('')
-    : Array(6).fill('<div class="ph">﷽</div>').join('');
+    ? g.map((x, i) => `<figure data-i="${i}"><img loading="lazy" src="${esc(x.src)}" alt="${esc(x.cap)}" onerror="this.parentElement.classList.add('nofile');this.remove()">${x.cap ? `<figcaption>${esc(x.cap)}</figcaption>` : ''}</figure>`).join('')
+    : Array(3).fill('<figure class="nofile"></figure>').join('');
   const news = DB.get('news', []).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   $('#newsList').innerHTML = news.map(n => `<article class="card"><span class="date">📅 ${esc(n.date)}</span><h3>${esc(n.title)}</h3><p class="pre">${esc(n.body)}</p></article>`).join('') || '<p class="center">لا توجد أخبار حالياً.</p>';
 }
@@ -223,7 +237,7 @@ function bindPublicForms() {
     if (DB.set('msgs', m)) { f.reset(); setMsg('#contactMsg', 'تم إرسال رسالتك، شكراً لتواصلك معنا', 1); }
   });
   $('#gallery').addEventListener('click', e => {
-    const fig = e.target.closest('figure'); if (!fig) return;
+    const fig = e.target.closest('figure'); if (!fig || fig.classList.contains('nofile')) return;
     const g = allGallery()[+fig.dataset.i];
     if (g) { $('#lightbox img').src = g.src; $('#lightbox').showModal(); }
   });
@@ -508,7 +522,7 @@ function vSettings() {
 function brand() { const n = S().name || 'دار أهل القرآن'; $('#brandName').textContent = n; $('#footName').textContent = n; document.title = n; }
 
 async function init() {
-  seed();
+  seed(); migrate();
   const st = S();
   if (!st.adminHash) { st.adminHash = await hash('admin123'); DB.set('settings', st); }   // كلمة المرور المبدئية: admin123 — غيّرها فوراً
   $('#year').textContent = new Date().getFullYear();
